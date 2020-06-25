@@ -1,0 +1,3 @@
+TRUNCATE 
+    unprinted_books
+RESTART IDENTITY CASCADE;
