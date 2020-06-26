@@ -4,7 +4,7 @@ const config = require("../config");
 
 const AuthService = {
   getUserWithEmail(db, email) {
-    return db("timespace_users").where({ email }).first();
+    return db("unprinted_users").where({ email }).first();
   },
   comparePasswords(password, hash) {
     return bcrypt.compare(password, hash);
