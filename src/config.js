@@ -7,5 +7,7 @@ module.exports = {
     process.env.DATABASE_URL || "postgresql://postgres@localhost/timespace",
   JWT_SECRET: process.env.JWT_SECRET || "change-this-secret",
   JWT_EXPIRY: process.env.JWT_EXPIRY || "3h",
-  CLOUDINARY_URL: process.env.CLOUDINARY_URL
+  CLOUDINARY_URL: process.env.CLOUDINARY_URL,
+  STRIPE_SECRET: process.env.STRIPE_SECRET,
+  WEBHOOK_SECRET: process.env.WEBHOOK_SECRET
 };

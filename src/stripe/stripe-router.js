@@ -3,8 +3,9 @@ const StripeService = require("./stripe-service");
 const path = require("path");
 const stripeRouter = express.Router();
 const bodyParser = require("body-parser");
+const config = require('../config')
 const stripe = require("stripe")(
-	"sk_test_51Gxx6HLzmqWmrXIYXIPDSrdx8Y4lO2erfeF79g6Fytet1AC2gBrRBSh1i2wIc6SwJfHxdOyHgJ1GPctF2f4BBzZr00iOOxgxHW",
+	config.STRIPE_SECRET,
 	{ apiVersion: "" }
 );
 
@@ -51,7 +52,7 @@ stripeRouter.post(
 		const signature = req.headers["stripe-signature"];
 		let event;
 
-		const webhook_secret = "whsec_Fnhnnr4e6u0NYkYinFCcWwJXYJPNczA5";
+		const webhook_secret = config.WEBHOOK_SECRET;
 		  try {
          		  event = stripe.webhooks.constructEvent(req.body, signature, webhook_secret);
 		  } catch (err) {
@@ -60,15 +61,10 @@ stripeRouter.post(
     
 		//   // Handle the event
 		switch (event.type) {
-			case "payment_intent.succeeded":
-				// const paymentIntent = event.data.object;
-				//       // Then define and call a method to handle the successful payment intent.
-				//       // handlePaymentIntentSucceeded(paymentIntent);
-				// StripeService.handlePaymentSucceed(paymentIntent);
-        
-        break;
-      case 'payment_intent.created':
-        break;
+			// case "payment_intent.succeeded":
+      //   break;
+      // case 'payment_intent.created':
+      //   break;
         case "charge.succeeded": 
         const paymentIntent = event.data.object
         StripeService.handlePaymentSucceed(paymentIntent)

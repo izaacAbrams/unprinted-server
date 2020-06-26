@@ -1,5 +1,6 @@
+const config = require('../config')
 const stripe = require("stripe")(
-	"sk_test_51Gxx6HLzmqWmrXIYXIPDSrdx8Y4lO2erfeF79g6Fytet1AC2gBrRBSh1i2wIc6SwJfHxdOyHgJ1GPctF2f4BBzZr00iOOxgxHW",
+	config.STRIPE_SECRET,
 	{ apiVersion: "" }
 );
 

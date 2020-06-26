@@ -66,8 +66,9 @@ booksRouter.route('/')
             return res.status(400).json({error: {message: err}})
         }
         newBook = {
-            ...newBook, imageLink: result.secure_url
+            ...newBook, cover_img: result.secure_url
         }
+        BooksService.addBook(req.app.get('db'), serializeBook(newBook))
         res.json(newBook)
     }) 
 

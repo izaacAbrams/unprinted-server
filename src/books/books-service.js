@@ -1,6 +1,6 @@
 const BooksService = {
-    getAllBooks(knex) {
-        return knex.from('unprinted_books').column(
+    getAllBooks(db) {
+        return db.from('unprinted_books').column(
             "id",
             "title",
             "author",
@@ -9,6 +9,13 @@ const BooksService = {
             "price",
             "date_created"
             )
+    },
+    addBook(db, book) {
+        return db
+            .insert(book)
+            .into('unprinted_books')
+            .returning('*')
+            .then(([book]) => book)
     }
 }
 module.exports = BooksService
