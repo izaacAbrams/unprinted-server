@@ -1,7 +1,9 @@
 BEGIN;
 
     TRUNCATE 
-        unprinted_books
+        unprinted_books,
+        unprinted_users,
+        unprinted_accounts
     RESTART IDENTITY CASCADE;
 
 INSERT INTO unprinted_books (title, author, cover_img, content, summary, price, created_by)
@@ -49,6 +51,10 @@ INSERT INTO unprinted_users (name, email, password, purchased)
         (
             'Demo User', 'demo@demo.com', '$2a$12$SR37Rtez4pcge62gBg8cwu0L6JYy5dWBetFRXjBjDbgYxaVvrVaOy', '{1, 3, 5}'
         );
+
+INSERT INTO unprinted_accounts (user_id, account_id) 
+    VALUES 
+    ('2', 'acct_1Gy1qDCrDBkfc4zR')
 
 COMMIT;
 

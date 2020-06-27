@@ -17,7 +17,6 @@ const morganOption = NODE_ENV === "production" ? "tiny" : "common";
 app.use(morgan(morganOption));
 app.use(helmet());
 app.use(cors());
-// app.use(express.json({limit: '10mb'}))
 app.use('/api/auth', authRouter)
 app.use('/api/users', usersRouter)
 app.use('/api/books', booksRouter)

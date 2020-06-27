@@ -50,7 +50,8 @@ const StripeService = {
 							destination: acct.account_id,
 						},
 						metadata: {
-								'id': book.id
+								'id': book.id,
+								'user_id': book.user_id
 							}
 					},
 					success_url: "http://localhost:3000/success",
@@ -60,8 +61,18 @@ const StripeService = {
 			});
 	},
 
-	handlePaymentSucceed(paymentIntent) {
-		console.log(paymentIntent.metadata.id)
+	handlePaymentSucceed(db, paymentIntent) {
+		return db.from('unprinted_users')
+		.where('id', paymentIntent.metadata.user_id)
+		.first()
+		.then(user => {
+			const userPurchased = user.purchased
+			userPurchased.push(parseInt(paymentIntent.metadata.id))
+			return db.from('unprinted_users')
+			.where('id', paymentIntent.metadata.user_id)
+			.first()
+			.update({purchased: userPurchased})
+		})
 	},
 
 };

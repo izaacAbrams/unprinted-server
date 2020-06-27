@@ -61,13 +61,9 @@ stripeRouter.post(
     
 		//   // Handle the event
 		switch (event.type) {
-			// case "payment_intent.succeeded":
-      //   break;
-      // case 'payment_intent.created':
-      //   break;
         case "charge.succeeded": 
         const paymentIntent = event.data.object
-        StripeService.handlePaymentSucceed(paymentIntent)
+        StripeService.handlePaymentSucceed(req.app.get('db'), paymentIntent)
         break;
 			default:
 				// Unexpected event type
