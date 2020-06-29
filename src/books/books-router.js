@@ -37,10 +37,10 @@ function serializeContent(content) {
 	}
 	return JSON.stringify(serializedContent);
 }
-booksRouter.use(express.json({limit: '10mb'}))
+booksRouter.use(express.json({ limit: "10mb" }));
 
 booksRouter
-    .route("/")
+	.route("/")
 	.get((req, res, next) => {
 		BooksService.getAllBooks(req.app.get("db"))
 			.then((book) => {
@@ -81,13 +81,16 @@ booksRouter.route("/owned/:user").get(requireAuth, async (req, res, next) => {
 			return owned.purchased;
 		})
 		.catch(next);
+
+		if (ownedId !== null) {
 	BooksService.getOwnedContent(req.app.get("db"), ownedId)
-		.then((book) =>
-			!!book
-				? res.json(book)
-				: res.status(404).json({ error: { message: "No books found." } })
-		)
+		.then((book) => {
+			res.json(book);
+		})
 		.catch(next);
+	} else {
+		return res.json({message: "No books found."})
+	}
 });
 
 booksRouter
@@ -163,7 +166,11 @@ booksRouter
 booksRouter.route("/created/:user_id").get((req, res, next) => {
 	BooksService.getCreatedBooks(req.app.get("db"), req.params.user_id)
 		.then((books) => {
-			res.json(books);
+			if (books.length > 0) {
+				res.json(books);
+			} else {
+				return res.json({ message: "No books found" });
+			}
 		})
 		.catch(next);
 });
