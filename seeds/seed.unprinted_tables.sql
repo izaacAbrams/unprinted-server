@@ -6,6 +6,23 @@ BEGIN;
         unprinted_accounts
     RESTART IDENTITY CASCADE;
 
+
+INSERT INTO unprinted_users (name, email, password, purchased) 
+    VALUES  
+        (
+            'Izaac Abrams', 'izaac.abrams25@gmail.com', '$2a$12$dIm5zAMfACbGu.IixuCbhOWiAZPd3lhlkaWqpe1HIE7ChgMh0sJfK', '{0, 1, 2, 3, 4, 5}'
+        ),
+        (
+            'Leela Brown', 'leela@gmail.com', '$2a$12$uoLZIdE.s9Z8FeY34wRUiuuYL6wKBiwdhyHWc.BmfnxSpkVNbMIGi', '{1, 2}'
+        ),
+        (
+            'Demo User', 'demo@demo.com', '$2a$12$SR37Rtez4pcge62gBg8cwu0L6JYy5dWBetFRXjBjDbgYxaVvrVaOy', '{1, 3, 5}'
+        );
+
+INSERT INTO unprinted_accounts (user_id, account_id) 
+    VALUES 
+    ('2', 'acct_1Gy1qDCrDBkfc4zR');
+    
 INSERT INTO unprinted_books (title, author, cover_img, content, summary, price, created_by)
     VALUES 
         (
@@ -39,22 +56,6 @@ INSERT INTO unprinted_books (title, author, cover_img, content, summary, price, 
 		{"section": 2, "content": "Vivamus accumsan purus in ullamcorper pulvinar. Sed sollicitudin, nibh et dignissim convallis, dui lorem vehicula augue, sit amet interdum elit felis et lectus. Aliquam quis metus non diam tincidunt consectetur. Curabitur varius convallis maximus. Cras ex metus, pretium eget leo eget, tempus aliquet lectus. Morbi quam diam, viverra in tempus quis, ultricies ut mauris. Duis volutpat tellus in dui faucibus, vitae feugiat velit feugiat. Aenean semper metus enim, in lobortis ipsum bibendum et. Vivamus pellentesque lacus aliquet dolor tempus molestie. Vivamus a nulla orci. Nulla vel dolor et nulla pellentesque dignissim quis nec orci. Donec lobortis auctor placerat. Pellentesque tempus nec urna ac venenatis. Cras eu felis auctor, sollicitudin nibh vel, pharetra tellus. Integer gravida faucibus ligula, a eleifend lectus. Integer iaculis dolor id euismod convallis. Mauris volutpat efficitur placerat. Nunc sit amet ultrices nulla. Vestibulum sit amet accumsan lorem. Nunc dignissim orci mi, at ullamcorper metus sagittis a. Cras vitae sapien aliquet, venenatis lacus at, mattis nisl. Phasellus a rhoncus nibh, quis vulputate augue."}]', 
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', '5.00', '2');
 
-
-INSERT INTO unprinted_users (name, email, password, purchased) 
-    VALUES  
-        (
-            'Izaac Abrams', 'izaac.abrams25@gmail.com', '$2a$12$dIm5zAMfACbGu.IixuCbhOWiAZPd3lhlkaWqpe1HIE7ChgMh0sJfK', '{0, 1, 2, 3, 4, 5}'
-        ),
-        (
-            'Leela Brown', 'leela@gmail.com', '$2a$12$uoLZIdE.s9Z8FeY34wRUiuuYL6wKBiwdhyHWc.BmfnxSpkVNbMIGi', '{1, 2}'
-        ),
-        (
-            'Demo User', 'demo@demo.com', '$2a$12$SR37Rtez4pcge62gBg8cwu0L6JYy5dWBetFRXjBjDbgYxaVvrVaOy', '{1, 3, 5}'
-        );
-
-INSERT INTO unprinted_accounts (user_id, account_id) 
-    VALUES 
-    ('2', 'acct_1Gy1qDCrDBkfc4zR')
 
 COMMIT;
 

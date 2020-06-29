@@ -7,6 +7,7 @@ const { requireAuth } = require("../middleware/jwt-auth");
 const jsonParser = express.json();
 const cloudinary = require("cloudinary").v2;
 const logger = require("../logger");
+const { json } = require("body-parser");
 
 const serializeBook = (book) => ({
 	id: book.id,
@@ -100,6 +101,35 @@ booksRouter
 			})
 			.catch(next);
 	})
+	.post(requireAuth, jsonParser, (req, res, next) => {
+		const { title, author, summary, price, created_by } = req.body;
+
+		const content = serializeContent(req.body.content);
+
+		const bookToCreate = {
+			content,
+			title,
+			author,
+			summary,
+			price,
+			created_by,
+		};
+		const numberOfValues = Object.values(bookToCreate).filter(Boolean).length;
+
+		if (numberOfValues === 0) {
+			return res.status(400).json({
+				error: {
+					message: `Request body must contain 'content'`,
+				},
+			});
+		}
+
+		BooksService.updateBook(req.app.get("db"), req.params.book_id, bookToUpdate)
+			.then((numRowsAffected) => {
+				res.status(204).end();
+			})
+			.catch();
+	})
 	.patch(requireAuth, jsonParser, (req, res, next) => {
 		const { title, author, summary, price, created_by } = req.body;
 
@@ -113,7 +143,6 @@ booksRouter
 			price,
 			created_by,
 		};
-console.log(req.body)
 		const numberOfValues = Object.values(bookToUpdate).filter(Boolean).length;
 
 		if (numberOfValues === 0) {

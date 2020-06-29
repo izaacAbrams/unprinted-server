@@ -54,8 +54,8 @@ const StripeService = {
 								'user_id': book.user_id
 							}
 					},
-					success_url: "http://localhost:3000/success",
-					cancel_url: "http://localhost:3000/failure",
+					success_url: "unprinted-client.vercel.app/success",
+					cancel_url: "unprinted-client.vercel.app/failure",
 				});
 				return session;
 			});
