@@ -11,6 +11,9 @@ const BooksService = {
             "date_created"
             )
     },
+    getById(db, id) {
+        return db.from('unprinted_books').select('*').where('id', id).first()
+    },
     getCreatedBooks(db, userId) {
         return db
             .from('unprinted_books')

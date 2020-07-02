@@ -7,7 +7,6 @@ const { requireAuth } = require("../middleware/jwt-auth");
 const jsonParser = express.json();
 const cloudinary = require("cloudinary").v2;
 const logger = require("../logger");
-const { json } = require("body-parser");
 
 const serializeBook = (book) => ({
 	id: book.id,
@@ -67,8 +66,15 @@ booksRouter
 				...newBook,
 				cover_img: result.secure_url,
 			};
-			BooksService.addBook(req.app.get("db"), serializeBook(newBook));
-			res.json(newBook);
+			BooksService.addBook(req.app.get("db"), serializeBook(newBook))
+			.then(book => {
+				res
+				.status(201)
+				.location(path.posix.join(req.originalUrl, `/${book.id}`))
+				.json(book)
+			})
+			.catch(next)
+			// res.status(201).json(newBook);
 		});
 	});
 
@@ -95,6 +101,19 @@ booksRouter.route("/owned/:user").get(requireAuth, async (req, res, next) => {
 
 booksRouter
 	.route("/:book_id")
+	.all(requireAuth, (req, res, next) => {
+		BooksService.getById(req.app.get("db"), req.params.book_id)
+		  .then((book) => {
+			if (!book) {
+			  return res.status(404).json({
+				error: { message: `Book doesn't exist` },
+			  });
+			}
+			res.book = book;
+			next();
+		  })
+		  .catch(next);
+	  })
 	.delete(requireAuth, (req, res, next) => {
 		const { book_id } = req.params;
 		BooksService.deleteBook(req.app.get("db"), book_id)
