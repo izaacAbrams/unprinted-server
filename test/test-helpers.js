@@ -163,6 +163,16 @@ function seedUsers(db, users) {
             ]))
 }
 
+function seedAccount(db) {
+    const account = {
+        user_id: '1', 
+        account_id: 'acct_1Gy1qDCrDBkfc4zR'
+    }
+        return db
+            .into('unprinted_accounts')
+            .insert(account)
+
+}
 function seedBooks(db, books) {
     return db   
         .into('unprinted_books')
@@ -227,5 +237,6 @@ module.exports = {
      cleanTables,
     seedBooks,
     seedMaliciousBook,
-    seedUsers
+    seedUsers,
+    seedAccount
 }
