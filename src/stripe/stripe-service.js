@@ -60,7 +60,12 @@ const StripeService = {
 				return session;
 			});
 	},
-
+	hasStripeConnection(db, user_id) {
+		return db.from('unprinted_accounts')
+		.where({user_id})
+		.first()
+		.returning('account_id')
+	},
 	handlePaymentSucceed(db, paymentIntent) {
 		return db.from('unprinted_users')
 		.where('id', paymentIntent.metadata.user_id)

@@ -3,7 +3,10 @@ const StripeService = require("./stripe-service");
 const path = require("path");
 const stripeRouter = express.Router();
 const bodyParser = require("body-parser");
-const config = require('../config')
+const config = require('../config');
+const e = require("express");
+const { requireAuth } = require("../middleware/jwt-auth");
+
 const stripe = require("stripe")(
 	config.STRIPE_SECRET,
 	{ apiVersion: "" }
@@ -30,7 +33,17 @@ stripeRouter.route("/").post((req, res, next) => {
 			res.status(201).json(response);
 		}
 	);
-});
+})
+.get(requireAuth, (req, res, next) => {
+	return StripeService.hasStripeConnection(req.app.get('db'), req.query.user).then(
+		response => {
+			if(!response) {
+				return status(404).json({connected: false})
+			} 
+			res.status(200).json({connected: true})
+		}
+	)
+})
 
 
 stripeRouter.route("/secret").post((req, res, next) => {
