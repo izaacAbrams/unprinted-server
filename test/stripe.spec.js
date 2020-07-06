@@ -4,7 +4,7 @@ const helpers = require("./test-helpers");
 const supertest = require("supertest");
 const { expect } = require("chai");
 
-describe.only("Stripe Endpoint", function () {
+describe("Stripe Endpoint", function () {
 	let db;
 
 	const { testUsers, testBooks } = helpers.makeUnprintedFixtures();
