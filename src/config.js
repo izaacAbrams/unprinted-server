@@ -4,7 +4,7 @@ module.exports = {
   API_TOKEN: process.env.API_TOKEN,
   CLIENT_ORIGIN: process.env.CLIENT_ORIGIN,
   DATABASE_URL:
-    process.env.DATABASE_URL || "postgresql://postgres@localhost/timespace",
+    process.env.DATABASE_URL || "postgresql://postgres@localhost/unprinted",
   JWT_SECRET: process.env.JWT_SECRET,
   JWT_EXPIRY: process.env.JWT_EXPIRY || "3h",
   CLOUDINARY_URL: process.env.CLOUDINARY_URL,

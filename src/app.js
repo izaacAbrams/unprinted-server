@@ -25,7 +25,8 @@ app.use('/api/stripe', stripeRouter)
 app.use(function errorHandler(error, req, res, next) {
   let response;
   if (NODE_ENV === "production") {
-    response = { error: { message: "server error" } };
+    // response = { error: { message: "server error" } };
+    response = { error: { message: error.message } };
   } else {
     console.log(error);
     response = { message: error.message, error };
