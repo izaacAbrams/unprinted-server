@@ -1,26 +1,52 @@
-# Express Boilerplate!
+# Unprinted
 
-This is a boilerplate project used for starting new projects!
+[Live Link](https://unprinted-client.vercel.app/)
 
-## Set up
+## API Endpoints:
 
-Complete the following steps to start a new project (NEW-PROJECT-NAME):
+- ### /books
 
-1. Clone this repository to your local machine `git clone BOILERPLATE-URL NEW-PROJECTS-NAME`
-2. `cd` into the cloned repository
-3. Make a fresh start of the git history for this project with `rm -rf .git && git init`
-4. Install the node dependencies `npm install`
-5. Move the example Environment file to `.env` that will be ignored by git and read by the express server `mv example.env .env`
-6. Edit the contents of the `package.json` to use NEW-PROJECT-NAME instead of `"name": "express-boilerplate",`
+  - GET all books. Returns all books with no content for displaying in library.
+  - POST requires authentication. Posts new book to database.
+  - /owned/:user GET requires auth. Returns book with content that user owns.
+  - /created/:user GET requires auth. Returns book with content that user has created.
+  - /:book_id DELETE, PATCH and POST a book. Requires auth.
 
-## Scripts
+- ### /auth
 
-Start the application `npm start`
+  - /auth/login POST Given correct login creds, will create JWT and return the created token.
 
-Start nodemon for the application `npm run dev`
+- ### /users
 
-Run the tests `npm test`
+  - POST given that the email has not been taken, will create user.
 
-## Deploying
+- ### /stripe
+- POST creates a stripe session for the checkout.
+- /webhook POST listens for events to redirect when checkout is complete.
+- /secret POST creates a stripe session for user to create an account.
 
-When your new project is ready for deployment, add a new Heroku application with `heroku create`. This will make a new git remote called "heroku" and you can then `npm run deploy` which will push to this remote's master branch.
+## Summary
+
+Unprinted is a crowdsourced, early access book library that gives the reader content more frequently than a traditional publisher. By doing this, the author can release only a chapter of the book at a time, and the reader does not have to wait roughly a year between publishings. The reader is able to view each book, and if interested in buying one can purchase and then begin reading it in the app.
+
+## Screenshots
+
+<img src="https://res.cloudinary.com/unprinted/image/upload/v1594062755/screenshots/LandingPage_vuzpbp.png" alt="Landing Page" width="500"/>
+
+The landing page, which has a description of the app and how to use it.
+
+<img src="https://res.cloudinary.com/unprinted/image/upload/v1594062755/screenshots/BooksList_dxm4tp.png" alt="Book List" width="500"/>
+
+The searchable library, where you can view a list of available books.
+
+<img src="https://res.cloudinary.com/unprinted/image/upload/v1594062755/screenshots/BookDisplay_hooqgp.png" alt="Book Page" width="500"/>
+
+An example of a books display page. User is able to either purchase book, or read book if owned.
+
+<img src="https://res.cloudinary.com/unprinted/image/upload/v1594079152/screenshots/Book_Reader_hwbdnr.png" alt="Book Reader" width="500"/>
+
+An example of the layout of a book when reading.
+
+## Tech Used
+
+React, Redux/Router, Stripe, Cloudinary, JWT, node.js, Express, PostgreSQL, Javascript ES6, HTML, CSS
