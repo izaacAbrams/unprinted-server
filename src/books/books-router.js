@@ -74,17 +74,17 @@ booksRouter
 				.json(book)
 			})
 			.catch(next)
-			// res.status(201).json(newBook);
 		});
 	});
 
 booksRouter.route("/owned/:user").get(requireAuth, async (req, res, next) => {
 	const ownedId = await BooksService.getOwned(
+		
 		req.app.get("db"),
 		req.params.user
 	)
 		.then((owned) => {
-			return owned.purchased;
+				return owned.purchased;
 		})
 		.catch(next);
 

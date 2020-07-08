@@ -26,10 +26,10 @@ const StripeService = {
 	},
 
 	stripeSession(db, book) {
-		const user_id = book.user_id;
+		const created_by = book.created_by;
 
 		return db("unprinted_accounts")
-			.where({ user_id })
+			.where("user_id", created_by )
 			.first()
 			.returning("account_id")
 			.then(async (acct) => {
@@ -72,6 +72,7 @@ const StripeService = {
 		.first()
 		.then(user => {
 			const userPurchased = user.purchased
+			console.log(user)
 			userPurchased.push(parseInt(paymentIntent.metadata.id))
 			return db.from('unprinted_users')
 			.where('id', paymentIntent.metadata.user_id)

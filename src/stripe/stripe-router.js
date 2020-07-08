@@ -71,7 +71,7 @@ stripeRouter.post(
 		  } catch (err) {
 		    res.status(400).send(`Webhook Error: ${err.message}`);
       } 
-    
+
 		//   // Handle the event
 		switch (event.type) {
         case "charge.succeeded": 
