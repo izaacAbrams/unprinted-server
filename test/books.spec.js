@@ -49,22 +49,19 @@ describe("Books Endpoint", function () {
 					expect(res.body.price).to.eql(testBook.price.toString());
 				});
 		});
-    });
-    
-    describe('GET /api/book/:book_id', () => {
-        context('Given no books', () => {
-            before('insert users', () => helpers.seedUsers(db, testUsers))
+	});
 
-            it('responds with 404', () => {
-                const fakeBook = 404;
-                return supertest(app)
-                .get(`/api/books/${fakeBook}`)
-                .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
-                .expect(404, {error: {message: `Book doesn't exist`}})
-            })
-        })
+	describe("GET /api/book/:book_id", () => {
+		context("Given no books", () => {
+			before("insert users", () => helpers.seedUsers(db, testUsers));
 
-     
-    })
-
+			it("responds with 404", () => {
+				const fakeBook = 404;
+				return supertest(app)
+					.get(`/api/books/${fakeBook}`)
+					.set("Authorization", helpers.makeAuthHeader(testUsers[0]))
+					.expect(404, { error: { message: `Book doesn't exist` } });
+			});
+		});
+	});
 });

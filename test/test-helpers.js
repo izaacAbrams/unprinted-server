@@ -79,164 +79,164 @@ function makeBooksArray() {
 }
 
 function makeUsersArray() {
-    return [
-        {
-            id: 1,
-            name: 'Izaac Abrams', 
-            email: 'izaac.abrams25@gmail.com', 
-            password: '$2a$12$dIm5zAMfACbGu.IixuCbhOWiAZPd3lhlkaWqpe1HIE7ChgMh0sJfK', 
-            purchased: '{0, 1, 2, 3, 4, 5}'
-        },
-        {
-            id: 2,
-            name: 'Leela Brown', 
-            email: 'leela@gmail.com', 
-            password: '$2a$12$uoLZIdE.s9Z8FeY34wRUiuuYL6wKBiwdhyHWc.BmfnxSpkVNbMIGi', 
-            purchased: '{1, 2}'
-        },
-        {
-            id: 3,
-            name: 'Demo User', 
-            email: 'demo@demo.com', 
-            password: '$2a$12$SR37Rtez4pcge62gBg8cwu0L6JYy5dWBetFRXjBjDbgYxaVvrVaOy', 
-            purchased: '{1, 3, 5}'
-        }
-    ]
+	return [
+		{
+			id: 1,
+			name: "Izaac Abrams",
+			email: "izaac.abrams25@gmail.com",
+			password: "$2a$12$dIm5zAMfACbGu.IixuCbhOWiAZPd3lhlkaWqpe1HIE7ChgMh0sJfK",
+			purchased: "{0, 1, 2, 3, 4, 5}",
+		},
+		{
+			id: 2,
+			name: "Leela Brown",
+			email: "leela@gmail.com",
+			password: "$2a$12$uoLZIdE.s9Z8FeY34wRUiuuYL6wKBiwdhyHWc.BmfnxSpkVNbMIGi",
+			purchased: "{1, 2}",
+		},
+		{
+			id: 3,
+			name: "Demo User",
+			email: "demo@demo.com",
+			password: "$2a$12$SR37Rtez4pcge62gBg8cwu0L6JYy5dWBetFRXjBjDbgYxaVvrVaOy",
+			purchased: "{1, 3, 5}",
+		},
+	];
 }
 
 function makeExpectedBook(book) {
-    return {
-        id: parseInt(book.id),
-        title: book.title, 
-        author: book.author,
-        cover_img: book.cover_img,
-        content: book.content, 
-        summary: book.summary,
-        price: book.price,
-        created_by: book.created_by
-    }   
+	return {
+		id: parseInt(book.id),
+		title: book.title,
+		author: book.author,
+		cover_img: book.cover_img,
+		content: book.content,
+		summary: book.summary,
+		price: book.price,
+		created_by: book.created_by,
+	};
 }
 
 function makeMaliciousBook() {
-    const maliciousBook = {
-        id: 404,
-        title: 'Naughty <script>alert("xss");</script>',
-        author: '<script>xssattack</script>',
-        cover_img: '<a>https://bad.com</a>',
-        content: JSON.stringify([
-            {
-              section: "1",
-              content: "<script>console.log('xss')</script>60",
-            },
-        ]),
-        summary: 'This is an <inline>xss attack</inline>',
-        price: '5',
-    }
+	const maliciousBook = {
+		id: 404,
+		title: 'Naughty <script>alert("xss");</script>',
+		author: "<script>xssattack</script>",
+		cover_img: "<a>https://bad.com</a>",
+		content: JSON.stringify([
+			{
+				section: "1",
+				content: "<script>console.log('xss')</script>60",
+			},
+		]),
+		summary: "This is an <inline>xss attack</inline>",
+		price: "5",
+	};
 
-    const expectedBook = {
-        id: 404, 
-        title: 'Naughty &lt;script&gt;alert("xss");&lt;/script&gt;',
-        author: '',
-        cover_img: '',
-        content:  `[{"section":"1","content":"&lt;script&gt;console.log('xss')&lt;/script&gt;60"}]`,
-        summary: '',
-        price: '5',
-    }
-    return maliciousBook, expectedBook
+	const expectedBook = {
+		id: 404,
+		title: 'Naughty &lt;script&gt;alert("xss");&lt;/script&gt;',
+		author: "",
+		cover_img: "",
+		content: `[{"section":"1","content":"&lt;script&gt;console.log('xss')&lt;/script&gt;60"}]`,
+		summary: "",
+		price: "5",
+	};
+	return maliciousBook, expectedBook;
 }
 
 function seedMaliciousBook(db, user, book) {
-    return seedUsers(db, [user]).then(() => db.into('unprinted_books').insert([book]))
+	return seedUsers(db, [user]).then(() =>
+		db.into("unprinted_books").insert([book])
+	);
 }
 
 function seedUsers(db, users) {
-    const preppedUsers = users.map(user => ({
-        ...user, 
-        password: bcrypt.hashSync(user.password, 1)
-    }))
-    return db
-        .into('unprinted_users')
-        .insert(preppedUsers)
-        .then(() => 
-            db.raw(`SELECT setval('unprinted_users_id_seq', ?)`, [
-                users[users.length - 1].id
-            ]))
+	const preppedUsers = users.map((user) => ({
+		...user,
+		password: bcrypt.hashSync(user.password, 1),
+	}));
+	return db
+		.into("unprinted_users")
+		.insert(preppedUsers)
+		.then(() =>
+			db.raw(`SELECT setval('unprinted_users_id_seq', ?)`, [
+				users[users.length - 1].id,
+			])
+		);
 }
 
 function seedAccount(db) {
-    const account = {
-        user_id: '1', 
-        account_id: 'acct_1Gy1qDCrDBkfc4zR'
-    }
-        return db
-            .into('unprinted_accounts')
-            .insert(account)
-
+	const account = {
+		user_id: "1",
+		account_id: "acct_1Gy1qDCrDBkfc4zR",
+	};
+	return db.into("unprinted_accounts").insert(account);
 }
 function seedBooks(db, books) {
-    return db   
-        .into('unprinted_books')
-        .insert(books)
-        .then(() => 
-            db.raw(`SELECT setval('unprinted_books_id_seq', ?)`, [
-                books[books.length - 1].id
-            ]))
+	return db
+		.into("unprinted_books")
+		.insert(books)
+		.then(() =>
+			db.raw(`SELECT setval('unprinted_books_id_seq', ?)`, [
+				books[books.length - 1].id,
+			])
+		);
 }
 
 function makeUnprintedFixtures() {
-    const testUsers = makeUsersArray()
-    const testBooks = makeBooksArray()
-    return {testUsers, testBooks}
+	const testUsers = makeUsersArray();
+	const testBooks = makeBooksArray();
+	return { testUsers, testBooks };
 }
 
 function cleanTables(db) {
-    return db.transaction((trx) =>
-    trx
-      .raw(
-        `TRUNCATE 
+	return db.transaction((trx) =>
+		trx
+			.raw(
+				`TRUNCATE 
       unprinted_books,
       unprinted_users,
       unprinted_accounts
       `
-      )
-      .then(() =>
-        Promise.all([
-          trx.raw(
-            `ALTER SEQUENCE unprinted_books_id_seq minvalue 0 START WITH 1`
-          ),
-          trx.raw(
-            `ALTER SEQUENCE unprinted_users_id_seq minvalue 0 START WITH 1`
-          ),
-          trx.raw(
-            `ALTER SEQUENCE unprinted_accounts_id_seq minvalue 0 START WITH 1`
-          ),
-          trx.raw(`SELECT setval('unprinted_books_id_seq', 0)`),
-          trx.raw(`SELECT setval('unprinted_users_id_seq', 0)`),
-          trx.raw(`SELECT setval('unprinted_accounts_id_seq', 0)`),
-        ])
-      )
-  );
+			)
+			.then(() =>
+				Promise.all([
+					trx.raw(
+						`ALTER SEQUENCE unprinted_books_id_seq minvalue 0 START WITH 1`
+					),
+					trx.raw(
+						`ALTER SEQUENCE unprinted_users_id_seq minvalue 0 START WITH 1`
+					),
+					trx.raw(
+						`ALTER SEQUENCE unprinted_accounts_id_seq minvalue 0 START WITH 1`
+					),
+					trx.raw(`SELECT setval('unprinted_books_id_seq', 0)`),
+					trx.raw(`SELECT setval('unprinted_users_id_seq', 0)`),
+					trx.raw(`SELECT setval('unprinted_accounts_id_seq', 0)`),
+				])
+			)
+	);
 }
 
 function makeAuthHeader(user, secret = process.env.JWT_SECRET) {
-    const token = jwt.sign({user_id: user.id}, secret, {
-        subject: user.email,
-        algorithm: 'HS256'
-    })
-    return `Bearer ${token}`
+	const token = jwt.sign({ user_id: user.id }, secret, {
+		subject: user.email,
+		algorithm: "HS256",
+	});
+	return `Bearer ${token}`;
 }
-
 
 module.exports = {
-    makeBooksArray,
-    makeUsersArray,
-    makeMaliciousBook,
-    makeUnprintedFixtures,
-     makeExpectedBook,
-     makeAuthHeader,
-     cleanTables,
-    seedBooks,
-    seedMaliciousBook,
-    seedUsers,
-    seedAccount
-}
+	makeBooksArray,
+	makeUsersArray,
+	makeMaliciousBook,
+	makeUnprintedFixtures,
+	makeExpectedBook,
+	makeAuthHeader,
+	cleanTables,
+	seedBooks,
+	seedMaliciousBook,
+	seedUsers,
+	seedAccount,
+};

@@ -67,35 +67,34 @@ booksRouter
 				cover_img: result.secure_url,
 			};
 			BooksService.addBook(req.app.get("db"), serializeBook(newBook))
-			.then(book => {
-				res
-				.status(201)
-				.location(path.posix.join(req.originalUrl, `/${book.id}`))
-				.json(book)
-			})
-			.catch(next)
+				.then((book) => {
+					res
+						.status(201)
+						.location(path.posix.join(req.originalUrl, `/${book.id}`))
+						.json(book);
+				})
+				.catch(next);
 		});
 	});
 
 booksRouter.route("/owned/:user").get(requireAuth, async (req, res, next) => {
 	const ownedId = await BooksService.getOwned(
-		
 		req.app.get("db"),
 		req.params.user
 	)
 		.then((owned) => {
-				return owned.purchased;
+			return owned.purchased;
 		})
 		.catch(next);
 
-		if (ownedId !== null) {
-	BooksService.getOwnedContent(req.app.get("db"), ownedId)
-		.then((book) => {
-			res.json(book);
-		})
-		.catch(next);
+	if (ownedId !== null) {
+		BooksService.getOwnedContent(req.app.get("db"), ownedId)
+			.then((book) => {
+				res.json(book);
+			})
+			.catch(next);
 	} else {
-		return res.json({message: "No books found."})
+		return res.json({ message: "No books found." });
 	}
 });
 
@@ -103,17 +102,17 @@ booksRouter
 	.route("/:book_id")
 	.all(requireAuth, (req, res, next) => {
 		BooksService.getById(req.app.get("db"), req.params.book_id)
-		  .then((book) => {
-			if (!book) {
-			  return res.status(404).json({
-				error: { message: `Book doesn't exist` },
-			  });
-			}
-			res.book = book;
-			next();
-		  })
-		  .catch(next);
-	  })
+			.then((book) => {
+				if (!book) {
+					return res.status(404).json({
+						error: { message: `Book doesn't exist` },
+					});
+				}
+				res.book = book;
+				next();
+			})
+			.catch(next);
+	})
 	.delete(requireAuth, (req, res, next) => {
 		const { book_id } = req.params;
 		BooksService.deleteBook(req.app.get("db"), book_id)

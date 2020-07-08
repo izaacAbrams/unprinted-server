@@ -1,8 +1,5 @@
-const config = require('../config')
-const stripe = require("stripe")(
-	config.STRIPE_SECRET,
-	{ apiVersion: "" }
-);
+const config = require("../config");
+const stripe = require("stripe")(config.STRIPE_SECRET, { apiVersion: "" });
 
 const StripeService = {
 	async connectStripe(db, newConnection) {
@@ -29,7 +26,7 @@ const StripeService = {
 		const created_by = book.created_by;
 
 		return db("unprinted_accounts")
-			.where("user_id", created_by )
+			.where("user_id", created_by)
 			.first()
 			.returning("account_id")
 			.then(async (acct) => {
@@ -41,7 +38,6 @@ const StripeService = {
 							amount: 500,
 							currency: "usd",
 							quantity: 1,
-							
 						},
 					],
 					payment_intent_data: {
@@ -50,9 +46,9 @@ const StripeService = {
 							destination: acct.account_id,
 						},
 						metadata: {
-								'id': book.id,
-								'user_id': book.user_id
-							}
+							id: book.id,
+							user_id: book.user_id,
+						},
 					},
 					success_url: "https://unprinted-client.vercel.app/success",
 					cancel_url: "https://unprinted-client.vercel.app/failure",
@@ -61,25 +57,27 @@ const StripeService = {
 			});
 	},
 	hasStripeConnection(db, user_id) {
-		return db.from('unprinted_accounts')
-		.where({user_id})
-		.first()
-		.returning('account_id')
+		return db
+			.from("unprinted_accounts")
+			.where({ user_id })
+			.first()
+			.returning("account_id");
 	},
 	handlePaymentSucceed(db, paymentIntent) {
-		return db.from('unprinted_users')
-		.where('id', paymentIntent.metadata.user_id)
-		.first()
-		.then(user => {
-			const userPurchased = user.purchased
-			userPurchased.push(parseInt(paymentIntent.metadata.id))
-			return db.from('unprinted_users')
-			.where('id', paymentIntent.metadata.user_id)
+		return db
+			.from("unprinted_users")
+			.where("id", paymentIntent.metadata.user_id)
 			.first()
-			.update({purchased: userPurchased})
-		})
+			.then((user) => {
+				const userPurchased = user.purchased;
+				userPurchased.push(parseInt(paymentIntent.metadata.id));
+				return db
+					.from("unprinted_users")
+					.where("id", paymentIntent.metadata.user_id)
+					.first()
+					.update({ purchased: userPurchased });
+			});
 	},
-
 };
 
 module.exports = StripeService;
