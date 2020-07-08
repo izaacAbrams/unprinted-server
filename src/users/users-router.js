@@ -28,6 +28,7 @@ usersRouter.post("/", jsonParser, (req, res, next) => {
           name,
           password: hashedPassword,
           email,
+          purchased: []
         };
 
         return UsersService.insertUser(req.app.get("db"), newUser).then(

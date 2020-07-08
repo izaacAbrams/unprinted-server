@@ -72,7 +72,6 @@ const StripeService = {
 		.first()
 		.then(user => {
 			const userPurchased = user.purchased
-			console.log(user)
 			userPurchased.push(parseInt(paymentIntent.metadata.id))
 			return db.from('unprinted_users')
 			.where('id', paymentIntent.metadata.user_id)
